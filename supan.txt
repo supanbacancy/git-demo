@@ -1,0 +1,44 @@
+Steps to setup two github work accounts
+
+1. Generate SSH Key in .ssh folder
+-> ssh-keygen -t ed25519 -C "supan.shah@bacancy.com" -f  ~/.ssh/id_supan_bacancy
+-> ssh-keygen -t ed25519 -C "supan@growthdynamics.dev" -f ~/.ssh/id_rsa
+
+2. Add SSH Keys into SSH-Agent
+eval "$(ssh-agent -s)"
+
+-> ssh-add ~/.ssh/id_supan_bacancy
+-> ssh-add ~/.ssh/id_rsa
+-> ssh-add -l
+
+3. Add SSH Public Keys into respective github accounts
+-> cat ~/.ssh/id_supan_bacancy.pub
+-> cat ~/.ssh/id_rsa.pub
+
+4. Configure SSH Config File
+-> nano ~/.ssh/config
+Add : 
+# Personal GitHub account
+Host github-personal
+    HostName github.com
+    User git
+    IdentityFile ~/.ssh/id_supan_bacancy
+    IdentitiesOnly yes
+
+# Work GitHub account
+Host github-work
+    HostName github.com
+    User git
+    IdentityFile ~/.ssh/id_rsa
+    IdentitiesOnly yes
+
+5. Test SSH Connection
+-> ssh -T git@github-work
+-> ssh -T git@github-personal
+
+6. Clone github repository using ssh
+-> git clone git@github.com:supanbacancy/melanies_smoothies.git
+
+7. Set Git user per repository
+-> git config user.name "supanbacancy"
+-> git config user.email "supan.shah@bacancy.com"
